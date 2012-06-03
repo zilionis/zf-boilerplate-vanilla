@@ -37,16 +37,6 @@ class Site_IndexController extends AppController
 
     public function footerAction()
     { 
-        $cache = Zend_Registry::get('cache');
-
-        if ($cache->contains('timestamp')) {
-            $timestamp = $cache->fetch('timestamp');
-            $this->view->cachedTimestamp = true;
-        } else {
-            $timestamp = time();
-            $cache->save('timestamp', $timestamp);
-        }
-
-        $this->view->timestamp = $timestamp;
+        
     }
 }
