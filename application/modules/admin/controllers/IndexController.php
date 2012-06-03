@@ -1,11 +1,13 @@
 <?php
 
-class Admin_IndexController extends Zend_Controller_Action
+use App\AppController as AppController;
+
+class Admin_IndexController extends AppController
 {
 
     public function init()
     {
-        /* Initialize action controller here */
+        parent::init();
     }
 
     public function indexAction()
