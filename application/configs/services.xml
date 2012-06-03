@@ -6,5 +6,7 @@
     </service>
     <service id="randomizer" class="App\Service\Randomizer" shared="true">
     </service>
+    <service id="tweets" class="App\Service\Tweets" shared="true">
+    </service>
   </services>
 </container>
