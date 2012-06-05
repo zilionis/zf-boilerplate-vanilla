@@ -25,27 +25,37 @@ class Tweet
     private $_stream;
     
     /** @Column(type="string", name="twitter_id") */
-    public $_twitterId;
+    public $twitterId;
     /** @Column(type="string", name="content") */
-    public $_content;
+    public $content;
     /** @Column(type="string", name="source") */
-    public $_source;
+    public $source;
     /** @Column(type="string", name="profile_img") */
-    public $_profileImg;
+    public $profileImg;
     /** @Column(type="string", name="name") */
-    public $_name;
+    public $name;
+    /** @Column(type="string", name="screen_name") */
+    public $screenName;
     /** @Column(type="datetime", name="created") */
     protected $_created;
+    /** @Column(type="boolean", name="approved") */
+    protected $_approved = false;
     
-    public function __construct($stream, $twitterId, $content, $source, $profileImg, $name, $created)
+    public function __construct($stream, $twitterId, $content, $source, $profileImg, $name, $screenName, $created)
     {
         $this->_stream = $stream;
-        $this->_twitterId = $twitterId;
-        $this->_content = $content;
-        $this->_source = $source;
-        $this->_profileImg = $profileImg;
-        $this->_name = $name;
+        $this->twitterId = $twitterId;
+        $this->content = $content;
+        $this->source = $source;
+        $this->profileImg = $profileImg;
+        $this->name = $name;
+        $this->screenName = $screenName;
         $this->_created = new \DateTime($created);
+    }
+    
+    public function getId()
+    {
+        return $this->_id;
     }
     
     public function getCreated($format = \DateTime::RFC2822)
@@ -53,8 +63,19 @@ class Tweet
         return $this->_created->format($format);
     }
     
+    public function isApproved()
+    {
+        return $this->_approved;
+    }
+    
+    public function setApproved($approve)
+    {
+        $this->_approved = $approve;
+        return $this;
+    }
+    
     public function __toString()
     {
-        return $this->_content;
+        return $this->content;
     }
 }

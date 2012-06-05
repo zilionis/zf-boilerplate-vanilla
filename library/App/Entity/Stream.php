@@ -23,7 +23,7 @@ class Stream
     /**
      * @param \Doctrine\Common\Collections\ArrayCollection $_tweets
      * 
-     * @OneToMany(targetEntity="App\Entity\Tweet", mappedBy="_tracker", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="App\Entity\Tweet", mappedBy="_stream", cascade={"persist", "remove"})
      */
     private $_tweets;
     
