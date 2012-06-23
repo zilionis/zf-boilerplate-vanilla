@@ -1,4 +1,4 @@
-twevents
+Vanilla Project
 ========
 
-A Twitter driven realtime event wall
+Basic setup for new projects
