@@ -70,12 +70,7 @@ class Stream
         $this->_running = $running;
         return $this;
     }
-    
-    public function getTweets()
-    {
-        return $this->_tweets;
-    }
-    
+
     public function __toString()
     {
         return $this->getTracker();
