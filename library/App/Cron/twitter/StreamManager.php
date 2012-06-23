@@ -75,14 +75,11 @@ class StreamManager extends BaseCron
             $this->_em->persist($stream);
             $this->_em->flush();
             
-            $count = 0;
-            
             // Test whether data is being passed and the stream is active in cache
             while(!feof($fp) && $this->_cache->contains('stream.'.$stream->getId())){
                 $json = fgets($fp);
                 $data = json_decode($json, true);
                 if($data){
-                    
                     // Create new Tweet object
                     $tweet = new Tweet(
                             $stream, 
@@ -90,20 +87,13 @@ class StreamManager extends BaseCron
                             $data['text'], 
                             $data['source'], 
                             $data['user']['profile_image_url'], 
-                            $data['user']['name'],
-                            $data['user']['screen_name'],
+                            $data['user']['name'], 
                             $data['created_at']
                     );
                     
                     // Persist and Save object
                     $this->_em->persist($tweet);
                     $this->_em->flush();
-                 
-                    // Count number of tweets collected from stream
-                    // Store this in cache, merely used for statistics
-                    $count = $this->_cache->fetch('stream.'.$stream->getId().'.tweet.count');
-                    $count = $count+1;
-                    $this->_cache->save('stream.'.$stream->getId().'.tweet.count', $count);
                 }
             }
             
@@ -116,7 +106,7 @@ class StreamManager extends BaseCron
         }
     }
     
-    public function stop(Stream $stream)
+    protected function stop(Stream $stream)
     {
         $this->_cache->delete('stream.'.$stream->getId());
     }
