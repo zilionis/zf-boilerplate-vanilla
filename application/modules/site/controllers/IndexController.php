@@ -1,8 +1,6 @@
 <?php
 
-use App\AppController as AppController;
-
-class Site_IndexController extends AppController
+class Site_IndexController extends Jbfreelance_AppController
 {
 
     public function init()

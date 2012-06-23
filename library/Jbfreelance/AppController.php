@@ -1,5 +1,4 @@
 <?php
-namespace App;
 
 /*
  * Default application controller
@@ -7,7 +6,7 @@ namespace App;
  * e.g. Cache, Entity Manager etc.
  */
 
-class AppController extends \Zend_Controller_Action
+class Jbfreelance_AppController extends Zend_Controller_Action
 {
     /**
      * @var Doctrine\ORM\EntityManager
