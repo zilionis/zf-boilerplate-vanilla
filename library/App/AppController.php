@@ -36,7 +36,7 @@ class AppController extends \Zend_Controller_Action
         $this->_auth = \Zend_Auth::getInstance();
         $this->_cache = \Zend_Registry::get('cache');
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-        $this->view->title = "TwEvents";
+        $this->view->title = "Vanilla";
     }
 }
 
