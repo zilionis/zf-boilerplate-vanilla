@@ -37,6 +37,8 @@ class Jbfreelance_Controller_Application extends Zend_Controller_Action
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->view->messages = $this->_flashMessenger->getMessages();
         $this->view->title = "Vanilla";
+        $this->view->description = "";
+        $this->view->author = "";
     }
 }
 
