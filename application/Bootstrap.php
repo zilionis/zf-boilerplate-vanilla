@@ -23,6 +23,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         
         $fmmAutoloader = new \Doctrine\Common\ClassLoader('App');
         $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'App');
+        
+        $fmmAutoloader = new \Doctrine\Common\ClassLoader('Jbfreelance');
+        $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'Jbfreelance');
 
         $fmmAutoloader = new \Doctrine\Common\ClassLoader('Boilerplate');
         $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'Boilerplate');
