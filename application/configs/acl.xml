@@ -12,5 +12,10 @@
                 <resource>site:auth</resource>
             </allow>
         </Guest>
+        <Admin label="Admin">
+            <allow>
+                <resource>*</resource>
+            </allow>
+        </Admin>
     </roles>
 </acl>
