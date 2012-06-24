@@ -1,6 +1,6 @@
 <?php
 
-class Site_IndexController extends Jbfreelance_Controller_Application
+class Site_IndexController extends Jbfreelance_AppController
 {
 
     public function init()
@@ -10,7 +10,7 @@ class Site_IndexController extends Jbfreelance_Controller_Application
     
     public function indexAction()
     {
-
+        
     }
     
     public function headerAction()

@@ -89,31 +89,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $es = new Elastica_Client();
         Zend_Registry::set('es', $es);
     }
-    
-    /**
-     * init Front Controller plugins 
-     */
-    public function _initAcl()
-    {
-        $this->bootstrap('frontController');
-        $fc = $this->getResource('frontController');
-        
-        // Define acl from xml
-        $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
-        
-        // Create the ACL object using default(XML) definations and Database
-        $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
-        $acl = new Jbfreelance_Acl(Jbfreelance_Acl::XML, $aclDefinition);
-        
-        // Initialise ACL and auth controller plugin
-        $fc->registerPlugin(new Jbfreelance_Plugin_Auth($acl));
-        
-        // Define restricted usernames
-        Zend_Registry::set('reserved_usernames', array(
-            'admin', 'superadmin', 'super user', 'administrator', 'moderator'
-        ));
-        
-        return $acl;
-    }
 
 }
