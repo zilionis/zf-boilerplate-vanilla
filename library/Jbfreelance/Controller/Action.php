@@ -1,11 +1,13 @@
 <?php
 
-/*
- * Jbfreelance Action Controller
+/**
+ * Jbfreelance\Controller\Action
+ * 
  * Init common functionality for each controller
  * e.g. Cache, Entity Manager etc.
+ * 
+ * @author Jason Brown <jason.brown@jbfreelance.co.uk>
  */
-
 class Jbfreelance_Controller_Action extends Zend_Controller_Action
 {
     /**
