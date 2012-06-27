@@ -1,6 +1,6 @@
 <?php
 
-class Site_IndexController extends Jbfreelance_Controller_Application
+class Site_IndexController extends Jbfreelance_Controller_Action
 {
 
     public function init()

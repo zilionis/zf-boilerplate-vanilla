@@ -1,12 +1,12 @@
 <?php
 
 /*
- * Default Application Controller
+ * Jbfreelance Action Controller
  * Init common functionality for each controller
  * e.g. Cache, Entity Manager etc.
  */
 
-class Jbfreelance_Controller_Application extends Zend_Controller_Action
+class Jbfreelance_Controller_Action extends Zend_Controller_Action
 {
     /**
      * @var Doctrine\ORM\EntityManager
@@ -31,10 +31,13 @@ class Jbfreelance_Controller_Application extends Zend_Controller_Action
     /* Initialize action controller here */
     public function init()
     {
+        // Get Entity Manager, Auth instance and Flash Messenger helper
         $this->_em = \Zend_Registry::get('em');
         $this->_auth = \Zend_Auth::getInstance();
         $this->_cache = \Zend_Registry::get('cache');
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+        
+        // Set view variables
         $this->view->messages = $this->_flashMessenger->getMessages();
         $this->view->title = "Vanilla";
         $this->view->description = "";

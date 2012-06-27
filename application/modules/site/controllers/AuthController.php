@@ -1,6 +1,6 @@
 <?php
 
-class Site_AuthController extends Jbfreelance_Controller_Application
+class Site_AuthController extends Jbfreelance_Controller_Action
 {
     public function init()
     {
