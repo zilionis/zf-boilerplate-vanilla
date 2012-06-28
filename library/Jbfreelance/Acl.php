@@ -116,7 +116,7 @@ class Jbfreelance_Acl extends Zend_Acl
         if($auth->hasIdentity())
         {
             $user = $auth->getIdentity();
-            return $user->getRoleId();
+            return $user->getRole();
         }else{
             // No one logged in assume guest
             return self::GUEST;

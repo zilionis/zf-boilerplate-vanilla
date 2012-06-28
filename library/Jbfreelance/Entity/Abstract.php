@@ -21,6 +21,15 @@ class Jbfreelance_Entity_Abstract
     protected $id;
     
     /**
+     * Get Entity Id
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
      * Magic getter for accessing entity properties. Calls the getProperty()
      * method if it exists.
      * @param string $property

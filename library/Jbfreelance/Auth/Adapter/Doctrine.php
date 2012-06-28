@@ -181,7 +181,7 @@ class Jbfreelance_Auth_Adapter_Doctrine implements Zend_Auth_Adapter_Interface
     
     public function getResultRowObject()
     {
-        return $this->resultRowObject;
+        return $this->resultRowObject[0];
     }
     
     /**
