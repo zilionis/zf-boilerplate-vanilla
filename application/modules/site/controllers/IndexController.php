@@ -10,7 +10,7 @@ class Site_IndexController extends Jbfreelance_Controller_Action
     
     public function indexAction()
     {
-
+        
     }
     
     public function headerAction()

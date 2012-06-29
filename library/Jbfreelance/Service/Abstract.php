@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager,
  *
  * @author Jason Brown <jason.brown@jbfreelance.co.uk>
  */
-class Jbfreelance_Service_Abstract
+class Jbfreelance_Service_Abstract extends Zend_Service_Abstract
 {
     /**
      * Instance of the Doctrine entity manager.
@@ -23,6 +23,12 @@ class Jbfreelance_Service_Abstract
      * @var string 
      */
     protected $entityClass;
+    
+    /**
+     * Cache
+     * @var \Zend_Cache 
+     */
+    protected $cache = null;
     
     /**
      * Creates an instance of the service, taking an optional configuration.
@@ -40,6 +46,8 @@ class Jbfreelance_Service_Abstract
 				}
 			}
     	}
+        
+        $this->cache = \Zend_Registry::get('cache');
     }
     
     /**
