@@ -110,13 +110,14 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
                 $result = $this->_doctrineLogin($options);
                 break;
             case self::AUTH_FACEBOOK:
+                $result = $this->_facebookLogin($options);
                 break;
             case self::AUTH_TWITTER:
                 break;
         }
         
         
-        return $this->_handleAuthResult($result);
+        //return $this->_handleAuthResult($result);
     }
     
     /**
@@ -166,8 +167,37 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
         }
     }
     
-    protected function _facebookLogin()
+    protected function _facebookLogin($options)
     {
+        //$this->adapter = new Jbfreelance_Auth_Adapter_Facebook($this->entityManager);
+        
+        /*$this->adapter->setEntityName("App\Entity\User")
+                    ->setIdentityField($this->identityField)
+                    ->setCredentialField($this->credentialField);*/
+        $frontController = Zend_Controller_Front::getInstance();
+    	$request = $frontController->getRequest();
+    	
+    	// First check to see wether we're processing a redirect response.
+    	$code = $request->getParam('code');
+        
+        $config = array('appId'  => '226380840801531',
+                            'secret' => 'b6745fc6bc55920225849f73e84a9cf2');
+
+        $facebook = new Facebook_Api($config);
+        
+        if(empty($code))
+        {
+            $uri = $facebook->getLoginUrl(
+                                array(
+                                    'scope' => 'user_about_me, user_birthday' ,
+                                    'redirect_uri' => "http://".$_SERVER['SERVER_NAME']."/"
+                                    )
+                                );
+
+            header("Location:".$uri);
+        }else{
+            $facebook->getUser();
+        }
     }
     
     protected function _twitterLogin()
