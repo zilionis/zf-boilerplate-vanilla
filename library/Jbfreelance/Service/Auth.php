@@ -200,8 +200,27 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
         }
     }
     
-    protected function _twitterLogin()
+    /**
+     * Authorizes a User, using their Twitter account
+     * @param Array $config - Must have the following values:
+     * callbackUrl - URI to be returned to after authorization
+     * siteUrl - Site Url to Twitter Oauth  @link https://twitter.com/oauth
+     * consumerKey - Twitter application consumer key
+     * consumerSecret Twitter application secret key
+     */
+    protected function _twitterLogin($config)
     {
+        $consumer = new Zend_Oauth_Consumer($config);
+        $requestToken = $consumer->getRequestToken();
+        
+        // Store request token in session
+        $session = new Zend_Session_Namespace('twitter_auth');
+        $session->twitter->requestToken = serialize($requestToken);
+        
+        // Prepare to redirect User using consumer
+        $consumer->setAuthorizeUrl("https://twitter.com/oauth/authenticate");
+        $consumer->redirect();
+        
     }
     
     /**

@@ -10,16 +10,6 @@ class Site_IndexController extends Jbfreelance_Controller_Action
     
     public function indexAction()
     {
-        $config = array(
-                'Method' => Jbfreelance_Service_Auth::AUTH_FACEBOOK,
-                'EntityManager' => $this->_em,
-                'EntityClass' => 'App\Entity\User',
-                'IdentityField' => 'username',
-                'CredentialField' => 'password'
-                );
-        
-        $auth = new Jbfreelance_Service_Auth($config);
-        $auth->login();
     }
     
     public function headerAction()
