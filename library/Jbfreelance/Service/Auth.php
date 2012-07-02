@@ -113,6 +113,7 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
                 $result = $this->_facebookLogin($options);
                 break;
             case self::AUTH_TWITTER:
+                $result = $this->_twitterLogin($options);
                 break;
         }
         
@@ -218,8 +219,19 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
         $session->twitter->requestToken = serialize($requestToken);
         
         // Prepare to redirect User using consumer
-        $consumer->setAuthorizeUrl("https://twitter.com/oauth/authenticate");
-        $consumer->redirect();
+        //$consumer->setAuthorizeUrl("https://twitter.com/oauth/authenticate");
+        
+        Zend_Debug::dump(unserialize($session->twitter->requestToken));
+        
+        if($session->twitter->redirected)
+        {
+            $session->twitter->redirected = false;
+            $consumer->redirect();
+        }else{
+            Zend_Debug::dump(unserialize($session->twitter->requestToken));
+            $session->twitter->accessToken = $consumer->getAccessToken($_GET, unserialize($session->twitter->requestToken));
+             Zend_Debug::dump($session->twitter->accessToken);
+        }
         
     }
     
