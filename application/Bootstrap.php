@@ -98,9 +98,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('frontController');
         $fc = $this->getResource('frontController');
         
-        // Define acl from xml
-        $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
-        
         // Create the ACL object using default(XML) definations and Database
         $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
         $acl = new Jbfreelance_Acl(Jbfreelance_Acl::XML, $aclDefinition);
@@ -114,6 +111,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         ));
         
         return $acl;
+    }
+    
+     public function _initUserActivity()
+    {
+        // Get front controller
+        $this->bootstrap('frontController');
+        $fc = $this->getResource('frontController');
+        
+        // Get user activity plugin
+        $fc->registerPlugin(new Jbfreelance_Plugin_UserActivity);
     }
 
 }
