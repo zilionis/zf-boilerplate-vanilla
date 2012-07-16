@@ -118,7 +118,7 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
         }
         
         
-        //return $this->_handleAuthResult($result);
+        return $this->_handleAuthResult($result);
     }
     
     /**
@@ -211,26 +211,41 @@ class Jbfreelance_Service_Auth extends Jbfreelance_Service_Abstract
      */
     protected function _twitterLogin($config)
     {
-        $consumer = new Zend_Oauth_Consumer($config);
-        $requestToken = $consumer->getRequestToken();
-        
-        // Store request token in session
-        $session = new Zend_Session_Namespace('twitter_auth');
-        $session->twitter->requestToken = serialize($requestToken);
-        
-        // Prepare to redirect User using consumer
-        //$consumer->setAuthorizeUrl("https://twitter.com/oauth/authenticate");
-        
-        Zend_Debug::dump(unserialize($session->twitter->requestToken));
-        
-        if($session->twitter->redirected)
-        {
-            $session->twitter->redirected = false;
-            $consumer->redirect();
-        }else{
-            Zend_Debug::dump(unserialize($session->twitter->requestToken));
-            $session->twitter->accessToken = $consumer->getAccessToken($_GET, unserialize($session->twitter->requestToken));
-             Zend_Debug::dump($session->twitter->accessToken);
+        try{
+            // create an Oauth consumer from config
+            $consumer = new Zend_Oauth_Consumer($config);
+
+            // Create session namespace
+            $session = new Zend_Session_Namespace('twitter_auth');
+
+            // Check if we're being directed back from Twitter
+            if(!$session->twitter->redirected || empty($_GET))
+            {
+                // Get Request token
+                $requestToken = $consumer->getRequestToken();
+
+                // Serialize and Store request token in session
+                $session->twitter->requestToken = serialize($requestToken);
+
+                // We want to now redirect to Twitter and allow the response to pass through
+                $session->twitter->redirected = true;
+                $consumer->redirect();
+            }else{
+                // Get and store access token
+                $session->twitter->accessToken = $consumer->getAccessToken($_GET, unserialize($session->twitter->requestToken));
+
+                // Reset redirect flag
+                $session->twitter->redirected = false;
+
+                // Check access Token was successful
+                return new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, "");
+            }
+        }catch (Exception $e){
+            // Catch and Log exception 
+            $logger = Zend_Registry::get('logger');
+            $logger->log($e->getMessage(), Zend_Log::ERR);
+            
+            return false;
         }
         
     }
