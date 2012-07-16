@@ -25,10 +25,9 @@ class Jbfreelance_Acl extends Zend_Acl
     
     protected $_config;
     
-    public function __construct($configType = null, \Zend_Config $config = null)
+    public function __construct($configType = null)
     {
         $this->_configType = $configType;
-        $this->_config = $config;
         
         switch($this->_configType)
         {
@@ -51,13 +50,30 @@ class Jbfreelance_Acl extends Zend_Acl
      */
     protected function _buildAclFromXml()
     {
+        // Get config from XML
+        $this->_config = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
+        
+        $this->_buildAcl();
+    
+    }
+    
+    protected function _buildAclFromDb()
+    {
+        
+    }
+    
+    private function _buildAcl()
+    {
+        // Check resources have been defined
         if (!isset($this->_config->resources->resource)) {
             throw new \Zend_Acl_Exception('No resources have been defined.');
         }
         
-        // Check theres more than one resource available
+        // Check there are resources available
         foreach ($this->_config->resources->resource as $resource) {
+            // Check resource hasn't previously been defined
             if (!$this->has($resource)) {
+                // Added resource to ACL
                 $this->addResource(new \Zend_Acl_Resource($resource));
             }
         }
@@ -69,42 +85,84 @@ class Jbfreelance_Acl extends Zend_Acl
         if (!isset($this->_config->roles->$role)) {
             throw new \Zend_Acl_Exception("The role '" . $role . "' has not been defined.");
         } else {
-            // Check role hasn't previously been defined
-            if (!$this->hasRole($role))
-            {
-                // Add role to ACL
-                $this->addRole($role);
-            }
-
-            // Set a global deny for this role
-            $this->deny($role);
             
-            if (isset($this->_config->roles->{$role}->allow)) {
-                $allow = $this->_config->roles->{$role}->allow;
-
-                // always use an array of resources, even if there's only 1
-                if ($allow->resource instanceof \Zend_Config) {
-                    $resources = $allow->resource->toArray();
-                } else {
-                    $resources = array($allow->resource);
-                }
-
-                foreach ($resources as $resource) {
-
-                    if ($resource === '*') {
-
-                        $this->allow($role); // global allow
-                    } else if ($resource && $this->has($resource)) {
-                        $this->allow($role, $resource);
+            // Check if this role has any inheritance
+            if(isset($this->_config->roles->{$role}->inherits))
+            {
+                // Get all parents for inheritance
+                $parents = explode(',', $this->_config->roles->{$role}->inherits);
+                
+                $parentRoles = array();
+                
+                // Loop through each parent
+                foreach($parents as $parent)
+                {
+                    // Check parent doesn't already exist
+                    if(!$this->hasRole($parent))
+                    {
+                        // Add role to ACL
+                        $this->addRole($parent);
+        
+                        // Build role access for this parent
+                        $this->_defineRules($parent);
+                        
+                        // Get ACL role instance for this parent
+                        $parentRole = $this->getRole($parent);
+                        
+                        // Add parent to array 
+                        $parentRoles[] = $parentRole;
+                        
                     }
                 }
+                
+                // Add role with inheritance from parents
+                $this->addRole($role, $parentRoles);
+                
+                // Build role access
+                $this->_defineRules($role);
+   
+            }else{
+            
+                // Add role to ACL
+                $this->addRole($role);
+                
+                // Build role access
+                $this->_defineRules($role);
             }
         }
     }
     
-    public function __buildAclFromDb()
+    /**
+     * Builds rules for given role
+     * @param string $role - current Auth Role
+     */
+    private function _defineRules($role)
     {
-        
+        // Set a global deny for this role
+        $this->deny($role);
+
+        if (isset($this->_config->roles->{$role}->allow)) {
+            $allow = $this->_config->roles->{$role}->allow;
+
+            // always use an array of resources, even if there's only 1
+            if ($allow->resource instanceof \Zend_Config) {
+                $resources = $allow->resource->toArray();
+            } else {
+                $resources = array($allow->resource);
+            }
+            
+            // Loop through each resource to add to role
+            foreach ($resources as $resource) {
+
+                if ($resource === '*')
+               {
+                    // global allow
+                    $this->allow($role); 
+                } else if ($resource && $this->has($resource)) {
+                    $this->allow($role, $resource);
+                }
+            }
+        }
     }
     
     public function getCurrentRole()

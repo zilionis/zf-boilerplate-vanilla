@@ -35,8 +35,8 @@ class User extends \Jbfreelance_Entity_Abstract
     /** @Column(type="string", name="activation_code") */
     protected $activationCode;
     
-    const ROLE_USER = 'user';
-    const ROLE_ADMIN = 'admin';
+    const ROLE_MEMBER = 'Member';
+    const ROLE_ADMIN = 'Admin';
     
     /** @Column(type="string", name="role") */
     protected $role;
@@ -56,7 +56,7 @@ class User extends \Jbfreelance_Entity_Abstract
         $this->email = $email;
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
-        $this->role = self::ROLE_USER;
+        $this->role = self::ROLE_MEMBER;
         
         // Get application salt from config
         $config = \Zend_Registry::get('config'); 
@@ -64,6 +64,9 @@ class User extends \Jbfreelance_Entity_Abstract
         
         // Treat password with salt
         $this->password = SHA1($this->salt.$password);
+        
+        // Create activation code
+        $this->activationCode = sha1(date('d-m-Y H:i:s').$this->salt);
     }
     
     public function getUsername()

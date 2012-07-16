@@ -12,6 +12,7 @@
                 <resource>site:auth</resource>
             </allow>
         </Guest>
+        <Member label="Member" inherits="Guest"></Member>
         <Admin label="Admin">
             <allow>
                 <resource>*</resource>
