@@ -99,8 +99,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $fc = $this->getResource('frontController');
         
         // Create the ACL object using default(XML) definations and Database
-        $aclDefinition = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
-        $acl = new Jbfreelance_Acl(Jbfreelance_Acl::XML, $aclDefinition);
+        $acl = new Jbfreelance_Acl(Jbfreelance_Acl::XML);
         
         // Initialise ACL and auth controller plugin
         $fc->registerPlugin(new Jbfreelance_Plugin_Auth($acl));
