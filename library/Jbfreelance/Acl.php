@@ -53,6 +53,7 @@ class Jbfreelance_Acl extends Zend_Acl
         // Get config from XML
         $this->_config = new \Zend_Config_Xml(APPLICATION_PATH.'/configs/acl.xml');
         
+        // Build the ACL using config
         $this->_buildAcl();
     
     }
@@ -62,6 +63,10 @@ class Jbfreelance_Acl extends Zend_Acl
         
     }
     
+    /**
+     * Builds ACL using defined config
+     * @throws \Zend_Acl_Exception 
+     */
     private function _buildAcl()
     {
         // Check resources have been defined
