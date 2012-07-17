@@ -8,11 +8,15 @@
     <roles>
         <Guest label="Guest">
             <allow>
-                <resource>site:index</resource>
-                <resource>site:auth</resource>
+                <resource name="site:index" permissions="index" />
+                <resource name="site:auth" />
             </allow>
         </Guest>
-        <Member label="Member" inherits="Guest"></Member>
+        <Member label="Member" inherits="Guest">
+            <allow>
+                <resource name="site:index" permissions="view,edit" />
+            </allow>
+        </Member>
         <Admin label="Admin">
             <allow>
                 <resource>*</resource>

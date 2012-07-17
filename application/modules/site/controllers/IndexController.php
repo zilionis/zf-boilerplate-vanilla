@@ -24,6 +24,20 @@ class Site_IndexController extends Jbfreelance_Controller_Action
         ));*/
     }
     
+    public function viewAction()
+    {
+        //$this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        Zend_Debug::dump('view');
+    }
+    
+     public function editAction()
+    {
+        //$this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        Zend_Debug::dump('edit');
+    }
+    
     public function headerAction()
     {
         $container = new Zend_Navigation(

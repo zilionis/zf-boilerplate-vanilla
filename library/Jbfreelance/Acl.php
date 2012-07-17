@@ -135,6 +135,7 @@ class Jbfreelance_Acl extends Zend_Acl
                 $this->_defineRules($role);
             }
         }
+        
     }
     
     /**
@@ -148,7 +149,7 @@ class Jbfreelance_Acl extends Zend_Acl
 
         if (isset($this->_config->roles->{$role}->allow)) {
             $allow = $this->_config->roles->{$role}->allow;
-
+            
             // always use an array of resources, even if there's only 1
             if ($allow->resource instanceof \Zend_Config) {
                 $resources = $allow->resource->toArray();
@@ -156,15 +157,27 @@ class Jbfreelance_Acl extends Zend_Acl
                 $resources = array($allow->resource);
             }
             
+            // If only one resource is defined toArray causes problems
+            // Wrap it in another array to fix this
+            if(!isset($resources[0]))
+            {
+                $resources = array($resources);
+            }
+            
             // Loop through each resource to add to role
-            foreach ($resources as $resource) {
-
-                if ($resource === '*')
+            foreach ($resources as $resource) 
+            {
+               if ($resource === '*')
                {
                     // global allow
                     $this->allow($role); 
-                } else if ($resource && $this->has($resource)) {
-                    $this->allow($role, $resource);
+                } else if (isset($resource['name']) && $this->has($resource['name'])){
+                    if(isset($resource['permissions']))
+                    {
+                        $this->allow($role, $resource['name'], explode(',', $resource['permissions']));
+                    }else{
+                        $this->allow($role, $resource['name']);
+                    }
                 }
             }
         }
