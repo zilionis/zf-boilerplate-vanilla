@@ -4,5 +4,6 @@ README.txt
 demos/
 extras/documentation
 data/migrations/*
+data/logs/*
 .DS_STORE
 
