@@ -33,7 +33,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $fmmAutoloader = new \Doctrine\Common\ClassLoader('Doctrine\DBAL\Migrations');
         $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'Doctrine\DBAL\Migrations');
         
-        $fmmAutoloader = new \Doctrine\Common\ClassLoader('DoctrineExtensions');
+        $fmmAutoloader = new \Doctrine\Common\ClassLoader('DoctrineExtensions', APPLICATION_PATH.'/../library/DoctrineExtensions/');
         $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'DoctrineExtensions');
     }
 
